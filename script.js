@@ -180,11 +180,6 @@ function showQuestion() {
   fourthAnswer.textContent = "4. " + quizData[question + 1].options[3];
 
   mainBox.addEventListener("click", checkAnswer);
-
-  // firstAnswer.addEventListener("click", checkAnswer);
-  // secondAnswer.addEventListener("click", checkAnswer);
-  // thirdAnswer.addEventListener("click", checkAnswer);
-  // fourthAnswer.addEventListener("click", checkAnswer);
 }
 
 async function checkAnswer(e) {
@@ -210,21 +205,6 @@ async function checkAnswer(e) {
       mainBox.appendChild(answerValidation);
     }
   }
-  //       if (
-  //         e.target.getAttribute("data-answer") === quizData[question + 1].answer
-  //       ) {
-  //         question++;
-  //
-  //         answerValidation.textContent = "Correct!";
-  //         mainBox.appendChild(answerValidation);
-  //         await new Promise((resolve) => setTimeout(resolve, 1000));
-  //         noMoreQuestions();
-  //       } else {
-  //         timeLeft -= 10;
-  //         answerValidation.textContent = "Wrong!";
-  //         mainBox.appendChild(answerValidation);
-  //       }
-  // }
 }
 
 const playerForm = `
