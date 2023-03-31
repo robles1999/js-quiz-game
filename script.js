@@ -1,6 +1,6 @@
 //! VARIABLES
 let question = 0;
-let timeLeft = 16;
+let timeLeft = 60;
 let currentQuestionIndex;
 let timerInterval;
 let score;
@@ -45,8 +45,6 @@ const quizData = {
     answer: "function myFunction() {}",
   },
 };
-
-// quiz variables
 
 //! ::::::::::::::: create DOM elements  :::::::::::::::
 const timeFlexContainer = document.createElement("div");
@@ -98,7 +96,7 @@ startButton.addEventListener("click", startQuiz);
 
 const questionCard = `
 <h1 class="question">Test</h1>
-<button class="answer answer-1">First Answer</button>
+<button class="answer answer-1"></button>
 <button class="answer answer-2"></button>
 <button class="answer answer-3"></button>
 <button class="answer answer-4"></button>
@@ -126,15 +124,15 @@ function updateTimer() {
   }
   //! change timer color when it reacher 10 seconds
   if (clock.textContent === "Timer: 11") {
-    clock.classList.toggle("red")
+    clock.classList.toggle("red");
   }
   clock.textContent = `Timer: ${timeLeft}`;
 }
 
 function showQuestion() {
+  mainBox.innerHTML = "";
 
   //! clear main box
-  mainBox.innerHTML = "";
 
   //! load question card
   mainBox.innerHTML = questionCard;
@@ -150,10 +148,19 @@ function showQuestion() {
 
   questionEl.textContent = quizData[question + 1].question;
 
-  firstAnswer.setAttribute("data-answer", quizData[question + 1].options[0]);
-  secondAnswer.setAttribute("data-answer", quizData[question + 1].options[1]);
-  thirdAnswer.setAttribute("data-answer", quizData[question + 1].options[2]);
-  fourthAnswer.setAttribute("data-answer", quizData[question + 1].options[3]);
+  //! contains array of options
+  const options = quizData[question + 1].options;
+
+  //! add data-answer attribute by looping through the answer options array
+  for (
+    let option = 0;
+    option < quizData[question + 1].options.length;
+    option++
+  ) {
+    document
+      .querySelector(".answer-" + (option + 1))
+      .setAttribute("data-answer", options[option])
+  }
 
   firstAnswer.textContent = "1. " + quizData[question + 1].options[0];
   secondAnswer.textContent = "2. " + quizData[question + 1].options[1];
@@ -166,37 +173,24 @@ function showQuestion() {
   fourthAnswer.addEventListener("click", checkAnswer);
 }
 
-function checkAnswer(e) {
+async function checkAnswer(e) {
   if (e.target.getAttribute("data-answer") === quizData[question + 1].answer) {
-    console.log("Correct!");
     question++;
 
-    
-
-    // const answerBox = document.querySelector(".main-box");
-    // const answerValidation = document.createElement("h1");
-    // answerValidation.setAttribute("class", "answer-validation")
     answerValidation.textContent = "Correct!";
 
     mainBox.appendChild(answerValidation);
-
-    console.log("Question number:" + question);
-
-    if (question >= Object.keys(quizData).length) {
+    if (question === Object.keys(quizData).length) {
+      await new Promise(resolve => setTimeout(resolve, 1000))
       window.location.replace("scores.html");
-    }
-    console.log(Object.keys(quizData).length);
-    setTimeout(() => {
+    } else {
+ 
       showQuestion();
-    }, 2000);
+    }
   } else {
     timeLeft -= 10;
-
-    // const answerValidation = document.createElement("h1");
-    // answerValidation.setAttribute("class", "answer-validation");
     answerValidation.textContent = "Incorrect!";
 
     mainBox.appendChild(answerValidation);
-    console.log("Incorrect.");
   }
 }
