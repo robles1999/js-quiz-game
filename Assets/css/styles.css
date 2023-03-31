@@ -5,18 +5,25 @@
 :root{
     --button-color: rgb(49, 21, 153);
     --button-hover: rgb(156, 113, 204);
+    --border-color: gray;
 }
 
 #quiz-container {
-  border: 3px dashed purple;
+  /* border: 3px dashed purple; */
   text-align: center;
-  padding-top: 4%;
+  /* padding-top: 4%; */
+  max-width: 50%;
+  margin: 100px auto auto auto ;
+  box-shadow: 0px 0px 25px 0px rgba(0,0,0,.5);
+  border-radius: 15px;
+  /* background-color: rgba(255, 202, 6); */
 }
 
 .timer-container {
-  border: 3px dashed blue;
+  /* border: 3px dashed blue; */
   display: flex;
   justify-content: space-between;
+  /* border-top: 25px; */
 }
 
 .high-score-text {
@@ -34,8 +41,9 @@
 }
 
 .main-box{
-    border: 3px dashed green;
+    /* border: 3px dashed green; */
     padding: 0px 150px 20px 150px;
+    /* height: 500px; */
 }
 
 .landing-paragraph{
@@ -73,7 +81,18 @@
     border-radius: 5px;
 }
 
+.answer-validation{
+    border-top: 2px solid var(--border-color);
+    padding-top: 10px;
+    color: var(--border-color);
+}
+
 .answer:hover{
     cursor: pointer;
     background-color: var(--button-hover);
 }
+
+.red {
+    color: red;
+}
+

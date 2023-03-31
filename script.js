@@ -1,6 +1,6 @@
 //! VARIABLES
 let question = 0;
-let timeLeft = 10;
+let timeLeft = 16;
 let currentQuestionIndex;
 let timerInterval;
 let score;
@@ -104,13 +104,18 @@ const questionCard = `
 <button class="answer answer-4"></button>
 </>
 `;
+
+//! ::::::::: answer validation element ::::::::::::::
+const answerValidation = document.createElement("h1");
+answerValidation.setAttribute("class", "answer-validation");
+
 //! ::::::::: DON'T DELETE BELOW THIS LINE ::::::::::::::
 
 function startQuiz() {
   showQuestion();
 
   // start timer
-  timerInterval = setInterval(updateTimer, 1000);
+  setInterval(updateTimer, 1000);
 }
 
 function updateTimer() {
@@ -119,16 +124,17 @@ function updateTimer() {
     timeLeft = 0;
     window.location.replace("scores.html");
   }
+  //! change timer color when it reacher 10 seconds
+  if (clock.textContent === "Timer: 11") {
+    clock.classList.toggle("red")
+  }
   clock.textContent = `Timer: ${timeLeft}`;
 }
 
 function showQuestion() {
-  //! select question text and answers
-  // const questionData = quizData[currentQuestionIndex];
 
   //! clear main box
   mainBox.innerHTML = "";
-  // landingPageParagraph.textContent = questionData.question;
 
   //! load question card
   mainBox.innerHTML = questionCard;
@@ -164,14 +170,33 @@ function checkAnswer(e) {
   if (e.target.getAttribute("data-answer") === quizData[question + 1].answer) {
     console.log("Correct!");
     question++;
+
+    
+
+    // const answerBox = document.querySelector(".main-box");
+    // const answerValidation = document.createElement("h1");
+    // answerValidation.setAttribute("class", "answer-validation")
+    answerValidation.textContent = "Correct!";
+
+    mainBox.appendChild(answerValidation);
+
     console.log("Question number:" + question);
+
     if (question >= Object.keys(quizData).length) {
       window.location.replace("scores.html");
     }
     console.log(Object.keys(quizData).length);
-    showQuestion();
+    setTimeout(() => {
+      showQuestion();
+    }, 2000);
   } else {
     timeLeft -= 10;
+
+    // const answerValidation = document.createElement("h1");
+    // answerValidation.setAttribute("class", "answer-validation");
+    answerValidation.textContent = "Incorrect!";
+
+    mainBox.appendChild(answerValidation);
     console.log("Incorrect.");
   }
 }
