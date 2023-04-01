@@ -5,6 +5,7 @@ let timeLeft = 60;
 let currentQuestionIndex;
 let timerInterval;
 let score;
+let highScoresData;
 
 //! quiz data
 const quizData = {
@@ -50,7 +51,7 @@ const quizData = {
 //! ::::::::::::::: create DOM elements  :::::::::::::::
 const timeFlexContainer = document.createElement("div");
 const mainBox = document.createElement("main");
-const timerText = document.createElement("h4");
+const timerHighScores = document.createElement("h4");
 const landingPageHeader = document.createElement("h1");
 const landingPageParagraph = document.createElement("p");
 const startButton = document.createElement("button");
@@ -62,13 +63,13 @@ landingPageHeader.textContent = "Coding Quiz Challenge";
 landingPageParagraph.textContent =
   "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!";
 
-timerText.textContent = "View high scores";
+timerHighScores.textContent = "View high scores";
 startButton.textContent = "Start Quiz";
 clock.textContent = "Timer";
 
 //! ::::::::::::::: set attributes  :::::::::::::::
 timeFlexContainer.setAttribute("class", "timer-container");
-timerText.setAttribute("class", "high-score-text");
+timerHighScores.setAttribute("class", "high-score-text");
 clock.setAttribute("class", "clock");
 landingPageParagraph.setAttribute("class", "landing-paragraph");
 mainBox.setAttribute("class", "main-box");
@@ -83,13 +84,14 @@ const submitButton = document.createElement("button");
 
 //! :::::::::::::::`APPEND` landing page elements ::::::::::::::::
 quizContainer.appendChild(timeFlexContainer);
-timeFlexContainer.appendChild(timerText);
+timeFlexContainer.appendChild(timerHighScores);
 timeFlexContainer.appendChild(clock);
 quizContainer.appendChild(mainBox);
 mainBox.appendChild(landingPageHeader);
 mainBox.appendChild(landingPageParagraph);
 mainBox.appendChild(startButton);
 startButton.addEventListener("click", startQuiz);
+timerHighScores.addEventListener("click", viewHighScores);
 
 //! ::::::::::::::: question card elements :::::::::::::::
 
@@ -113,7 +115,7 @@ function startQuiz() {
   showQuestion();
 
   // start timer
-  setInterval(updateTimer, 1000);
+  timerInterval = setInterval(updateTimer, 1000);
 }
 
 function updateTimer() {
@@ -131,6 +133,7 @@ function updateTimer() {
 
 async function noMoreQuestions() {
   if (question === Object.keys(quizData).length) {
+    clearInterval(timerInterval);
     score = timeLeft;
     console.log(`This is your score: ${timeLeft + 1}`);
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -207,31 +210,78 @@ async function checkAnswer(e) {
   }
 }
 
-const playerForm = `
-<form>
+function saveScore() {
+  const playerForm = `
+<h1 class="done-h1">All done!</h1>
+<p class="player-score"></p>
+<p class="initials-p">Enter initials:</>
 <input
     type="text"
     name="initials"
-    id="initials"
-    placeholder="Enter your initials" />
+    id="initials" />
     <button id="sub-button">Submit</button>
-</form>
 `;
+  //! retrieve and parse previous local storage data from scores key
+  const highScoresData = JSON.parse(localStorage.getItem("scores") || "[]");
 
-function saveScore() {
+  //! if there is data in the local storage, push it to the highScoresData
+  // if (localStorageData) {
+  //   localStorageData.forEach((e) => {
+  //     highScoresData.push(localStorage);
+  //   });
+  // }
+
+  //! show players result and ask to input initials
   mainBox.innerHTML = playerForm;
+  document.querySelector(".player-score").textContent =
+    "Your final score is: " + timeLeft;
 
   const subBtn = document.querySelector("#sub-button");
 
+  //! when the initials are submitted, add the initials and score
+  //! to the `highScoresData` array, then write new data to local storage
   subBtn.addEventListener("click", (e) => {
     e.preventDefault();
     const initials = document.querySelector("#initials").value;
-    console.log(initials);
 
-    localStorage.setItem("Luis-score", score);
-    localStorage.setItem("Luis-initials", initials);
+    //! add player data to highScoresData array
+    const playerScore = {};
+    playerScore.initials = initials;
+    playerScore.score = score;
+
+    highScoresData.push(playerScore);
+
+    //! write new data to local storage
+    localStorage.setItem("scores", JSON.stringify(highScoresData));
+
+    mainBox.innerHTML = "";
+    viewHighScores();
   });
+}
 
-  const storedScore = localStorage.getItem("score");
-  console.log("Stored score: " + storedScore);
+function viewHighScores() {
+  mainBox.innerHTML = "";
+  let numbers = 0;
+
+  const highScoresHeading = document.createElement("h1");
+  highScoresHeading.setAttribute("class", "hs-h1");
+  highScoresHeading.textContent = "High Scores";
+  mainBox.appendChild(highScoresHeading);
+
+  const highScoresHistory = JSON.parse(
+    localStorage.getItem("scores") || "No scores."
+  );
+
+  highScoresHistory.forEach(function (player, index) {
+    const scoreItem = document.createElement("p");
+    if (numbers % 2) {
+      scoreItem.setAttribute("class", "hs-initials");
+    } else {
+      scoreItem.setAttribute("class", "hs-initials gray-bg");
+    }
+    numbers += 1;
+    scoreItem.innerHTML =
+      index + 1 + ". " + player.initials + ": " + player.score;
+    mainBox.appendChild(scoreItem);
+  });
 }
