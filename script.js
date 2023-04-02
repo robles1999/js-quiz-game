@@ -130,16 +130,21 @@ function startQuiz() {
 }
 
 function updateTimer() {
-  timeLeft--;
   if (timeLeft < 0) {
-    timeLeft = 0;
-    // window.location.replace("scores.html");
+    clearInterval(timerInterval);
+    console.log(timeLeft);
+    // timeLeft = 0;
+    clock.textContent = `Timer: ${timeLeft}`;
+    alert("You ran out of time.")
+    window.location.replace("index.html");
+  } else {
+    clock.textContent = `Timer: ${timeLeft}`;
+    timeLeft--;
   }
   //! change timer color when it reacher 10 seconds
   if (timeLeft === 10) {
     clock.classList.toggle("red");
   }
-  clock.textContent = `Timer: ${timeLeft}`;
 }
 
 async function noMoreQuestions() {

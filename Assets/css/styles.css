@@ -14,7 +14,7 @@ h1, h4,
   --border-color: gray;
 }
 
-#quiz-container {
+#quiz-container, #scores-container {
   /* border: 3px dashed purple; */
   max-width: 40%;
   margin: 100px auto auto auto;
@@ -79,6 +79,7 @@ h1, h4,
   padding: 10px;
   border-radius: 5px;
   align-self: center;
+  margin-top: 20px;
 }
 
 .start-button:hover {
@@ -136,6 +137,7 @@ h1, h4,
 }
 
 .hs-h1 {
+  padding-top: 20px;
   margin: 50px 0px 40px;
 }
 
@@ -161,8 +163,10 @@ h1, h4,
 
 #go-back{
   margin-left: 50px;
+  margin-bottom: 20px;
 }
 
 #clear-history{
   margin-right: 50px;
+  margin-bottom: 20px;
 }
