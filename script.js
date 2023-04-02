@@ -1,7 +1,7 @@
 "use strict";
 //! VARIABLES
 let questionNumber = 1;
-let timeLeft = 15;
+let timeLeft = 30;
 let currentQuestionIndex;
 let timerInterval;
 let score;
@@ -19,33 +19,33 @@ const quizData = {
     options: ["+=", "-=", "=", "*="],
     answer: "=",
   },
-  // 3: {
-  //   question:
-  //     "What is the result of adding a number and a string in JavaScript?",
-  //   options: ["An error", "The number", "The string", "A new data type"],
-  //   answer: "A new data type",
-  // },
-  // 4: {
-  //   question: "What is the purpose of the typeof operator in JavaScript?",
-  //   options: [
-  //     "To check if two values are equal",
-  //     "To convert a string to a number",
-  //     "To find the length of a string",
-  //     "To determine the type of a value",
-  //   ],
-  //   answer: "To determine the type of a value",
-  // },
-  // 5: {
-  //   question:
-  //     "What is the correct syntax for a function declaration in JavaScript?",
-  //   options: [
-  //     "function myFunction() {}",
-  //     "myFunction() {}",
-  //     "var myFunction = function() {}",
-  //     "const myFunction => {}",
-  //   ],
-  //   answer: "function myFunction() {}",
-  // },
+  3: {
+    question:
+      "What is the result of adding a number and a string in JavaScript?",
+    options: ["An error", "The number", "The string", "A new data type"],
+    answer: "A new data type",
+  },
+  4: {
+    question: "What is the purpose of the typeof operator in JavaScript?",
+    options: [
+      "To check if two values are equal",
+      "To convert a string to a number",
+      "To find the length of a string",
+      "To determine the type of a value",
+    ],
+    answer: "To determine the type of a value",
+  },
+  5: {
+    question:
+      "What is the correct syntax for a function declaration in JavaScript?",
+    options: [
+      "function myFunction() {}",
+      "myFunction() {}",
+      "var myFunction = function() {}",
+      "const myFunction => {}",
+    ],
+    answer: "function myFunction() {}",
+  },
 };
 // function landingPage() {
 
@@ -96,14 +96,10 @@ mainBox.appendChild(landingPageParagraph);
 mainBox.appendChild(startBtnContainer);
 startBtnContainer.appendChild(startButton);
 startButton.addEventListener("click", startQuiz);
-// timerHighScores.addEventListener("click", viewHighScores);
 timerHighScores.addEventListener("click", () => {
   window.location.href = "scores.html"
 });
 
-// };
-
-// landingPage()
 //! ::::::::::::::: question card elements :::::::::::::::
 
 const questionCard = `
@@ -132,18 +128,15 @@ function startQuiz() {
 function updateTimer() {
   if (timeLeft < 0) {
     clearInterval(timerInterval);
-    console.log(timeLeft);
-    // timeLeft = 0;
-    clock.textContent = `Timer: ${timeLeft}`;
-    alert("You ran out of time.")
+    alert("You ran out of time or your score is less than 0.")
     window.location.replace("index.html");
   } else {
-    clock.textContent = `Timer: ${timeLeft}`;
+    //! change timer color when it reaches 10 seconds
+    if (timeLeft === 10) {
+      clock.classList.toggle("red");
+    }
     timeLeft--;
-  }
-  //! change timer color when it reacher 10 seconds
-  if (timeLeft === 10) {
-    clock.classList.toggle("red");
+    clock.textContent = `Timer: ${timeLeft}`;
   }
 }
 
@@ -202,7 +195,6 @@ function showQuestion() {
 }
 
 async function checkAnswer(e) {
-  // e.stopPropagation();
 
   //! make sure one of the answer buttons was pressed
   //? `target` returns the entire element
@@ -245,13 +237,6 @@ function saveScore() {
   //! retrieve and parse previous local storage data from scores key
   const highScoresData = JSON.parse(localStorage.getItem("scores") || "[]");
 
-  //! if there is data in the local storage, push it to the highScoresData
-  // if (localStorageData) {
-  //   localStorageData.forEach((e) => {
-  //     highScoresData.push(localStorage);
-  //   });
-  // }
-
   //! show players result and ask to input initials
   mainBox.innerHTML = playerForm;
   document.querySelector(".player-score").textContent =
@@ -280,53 +265,3 @@ function saveScore() {
     window.location.href = "scores.html"
   });
 }
-
-// function viewHighScores() {
-//   timeFlexContainer.innerHTML = "";
-//   mainBox.innerHTML = "";
-// 
-//   const highScoresHeading = document.createElement("h1");
-//   highScoresHeading.setAttribute("class", "hs-h1");
-//   highScoresHeading.textContent = "High Scores";
-//   mainBox.appendChild(highScoresHeading);
-// 
-//   const highScoresHistory = JSON.parse(
-//     localStorage.getItem("scores") || "No scores."
-//   );
-// 
-//   highScoresHistory.forEach(function (player, index) {
-//     const scoreItem = document.createElement("p");
-//     if (index % 2) {
-//       scoreItem.setAttribute("class", "hs-initials");
-//     } else {
-//       scoreItem.setAttribute("class", "hs-initials gray-bg");
-//     }
-//     scoreItem.innerHTML =
-//       index + 1 + ". " + player.initials + ": " + player.score;
-//     mainBox.appendChild(scoreItem);
-//   });
-// 
-//   const highScoreBtnSection = document.createElement("div");
-//   const homeBtn = document.createElement('button');
-//   const clearHistory = document.createElement('button');
-// 
-// 
-//   homeBtn.innerText = "Go Back";
-//   clearHistory.innerText = "Clear History";
-// 
-//   highScoreBtnSection.setAttribute("class", "hs-btn-section")
-//   homeBtn.setAttribute("id", "go-back");
-//   clearHistory.setAttribute("id", "clear-history");
-// 
-//   mainBox.appendChild(highScoreBtnSection);
-//   highScoreBtnSection.appendChild(homeBtn);
-//   highScoreBtnSection.appendChild(clearHistory);
-// 
-//   highScoreBtnSection.addEventListener("click", (e) => {
-//     console.log("Scores page button pressed: " + e.target)
-//     if (e.target.matches("go-back")) {
-//       window.location.href = "index/"
-//     }
-//   })
-// 
-// }
