@@ -5,6 +5,7 @@ let timeLeft = 30;
 let currentQuestionIndex;
 let timerInterval;
 let highScoresData;
+let validation;
 
 //! quiz data
 const quizData = {
@@ -123,7 +124,7 @@ function startQuiz() {
 }
 
 async function updateTimer() {
-  //! if timer is 0 the game is over alert the user and redirect 
+  //! if timer is 0 the game is over alert the user and redirect
   //! call saveScore
   if (timeLeft === 0) {
     clearInterval(timerInterval);
@@ -147,8 +148,7 @@ async function updateTimer() {
 async function noMoreQuestions() {
   if (questionNumber > Object.keys(quizData).length) {
     clearInterval(timerInterval);
-    console.log(`This is your score: ${timeLeft + 1}`);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     mainBox.innerHTML = "";
     saveScore();
   } else {
@@ -162,6 +162,10 @@ function showQuestion() {
 
   //! load question card
   mainBox.innerHTML = questionCard;
+
+  //! send feedback to the user on previous question
+  answerValidation.textContent = validation;
+  mainBox.appendChild(answerValidation);
 
   //! select question card elements
   const questionEl = document.querySelector(".question");
@@ -192,31 +196,26 @@ function showQuestion() {
 }
 
 async function checkAnswer(e) {
+
+  console.log("Question number: " + questionNumber)
   e.stopPropagation();
-  console.log("check answer: " + e.target);
   //! make sure one of the answer buttons was pressed
   //? `target` returns the entire element
   //? ex. < button class="btn .answer" data-answer="//"> text</ >
 
   if (e.target.matches(".answer")) {
-    // console.log(e.target);
     if (e.target.dataset.answer === quizData[questionNumber].answer) {
-      //! if correct answer increment question number
       questionNumber++;
-      //! send feedback to the user
-      answerValidation.textContent = "Correct!";
-      mainBox.appendChild(answerValidation);
-      //! give time for the user to read feedback
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      validation = "Correct!";
       //! check if there are more questions or if we reached the end
       //! of the quizData
       noMoreQuestions();
     } else {
       //! if a wrong answer was selected subtract 10 seconds from clock
       timeLeft -= 10;
-      //! send feedback to the user
-      answerValidation.textContent = "Wrong!";
-      mainBox.appendChild(answerValidation);
+      validation = "Wrong!";
+      questionNumber++;
+      noMoreQuestions();
     }
   }
 }
