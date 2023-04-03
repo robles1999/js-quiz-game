@@ -123,10 +123,12 @@ function startQuiz() {
   timerInterval = setInterval(updateTimer, 1000);
 }
 
-function updateTimer() {
-  if (timeLeft < 0) {
+async function updateTimer() {
+  if (timeLeft === 0) {
     clearInterval(timerInterval);
-    alert("You ran out of time or your score is less than 0.");
+    clock.textContent = `Timer: ${timeLeft}`;
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    alert("You ran out of time.");
     window.location.replace("index.html");
   } else {
     //! change timer color when it reaches 10 seconds
