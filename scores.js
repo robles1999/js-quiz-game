@@ -1,6 +1,9 @@
 //! load local storage data
-const highScoresHistory = JSON.parse(
-  localStorage.getItem("scores") || "[]"
+let highScoresHistory = JSON.parse(localStorage.getItem("scores") || "[]");
+
+//! sort scores to present the scores in descending order
+highScoresHistory = highScoresHistory.sort((a, b) =>
+  a.score < b.score ? 1 : -1
 );
 
 //! scores section div

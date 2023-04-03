@@ -4,7 +4,6 @@ let questionNumber = 1;
 let timeLeft = 30;
 let currentQuestionIndex;
 let timerInterval;
-let score;
 let highScoresData;
 
 //! quiz data
@@ -124,16 +123,21 @@ function startQuiz() {
 }
 
 async function updateTimer() {
+  //! if timer is 0 the game is over alert the user and redirect 
+  //! call saveScore
   if (timeLeft === 0) {
     clearInterval(timerInterval);
     clock.textContent = `Timer: ${timeLeft}`;
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     alert("You ran out of time.");
-    window.location.replace("index.html");
+    timeLeft = 0;
+    saveScore();
   } else {
     //! change timer color when it reaches 10 seconds
-    if (timeLeft === 10) {
-      clock.classList.toggle("red");
+    if (timeLeft < 12) {
+      if (!clock.getAttribute("red")) {
+        clock.classList.add("red");
+      }
     }
     timeLeft--;
     clock.textContent = `Timer: ${timeLeft}`;
@@ -143,7 +147,6 @@ async function updateTimer() {
 async function noMoreQuestions() {
   if (questionNumber > Object.keys(quizData).length) {
     clearInterval(timerInterval);
-    score = timeLeft;
     console.log(`This is your score: ${timeLeft + 1}`);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     mainBox.innerHTML = "";
@@ -196,7 +199,7 @@ async function checkAnswer(e) {
   //? ex. < button class="btn .answer" data-answer="//"> text</ >
 
   if (e.target.matches(".answer")) {
-    console.log(e.target);
+    // console.log(e.target);
     if (e.target.dataset.answer === quizData[questionNumber].answer) {
       //! if correct answer increment question number
       questionNumber++;
@@ -248,7 +251,7 @@ function saveScore() {
     //! add player data to highScoresData array
     const playerScore = {};
     playerScore.initials = initials;
-    playerScore.score = score;
+    playerScore.score = timeLeft;
 
     highScoresData.push(playerScore);
 
@@ -256,7 +259,6 @@ function saveScore() {
     localStorage.setItem("scores", JSON.stringify(highScoresData));
 
     mainBox.innerHTML = "";
-    // viewHighScores();
     window.location.href = "scores.html";
   });
 }
