@@ -163,8 +163,11 @@ function showQuestion() {
   mainBox.innerHTML = questionCard;
 
   //! send feedback to the user on previous question
-  answerValidation.textContent = validation;
-  mainBox.appendChild(answerValidation);
+  if (questionNumber > 1) {
+    answerValidation.textContent = validation;
+    mainBox.appendChild(answerValidation);
+
+  }
 
   //! select question card elements
   const questionEl = document.querySelector(".question");

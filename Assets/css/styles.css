@@ -1,12 +1,5 @@
 * {
   box-sizing: border-box;
-  /* margin: 0px; */
-}
-
-h1,
-h4,
-.landing-paragraph {
-  text-align: center;
 }
 
 :root {
@@ -15,18 +8,21 @@ h4,
   --border-color: gray;
 }
 
-#quiz-container,
-#scores-container {
-  /* border: 3px dashed purple; */
-  max-width: 40%;
-  margin: 100px auto auto auto;
-  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.5);
-  border-radius: 15px;
+/*:::::::::::: Landing page ::::::::::::*/
+h1,
+h4,
+.landing-paragraph {
+  text-align: center;
+}
+
+body{
+  display: flex;
+  padding: 80px 250px;
+  justify-content: center;
 }
 
 .timer-container,
 .hs-btn-section {
-  /* border: 3px dashed blue; */
   display: flex;
   justify-content: space-between;
 }
@@ -35,7 +31,6 @@ h4,
   display: block;
   color: purple;
   padding-left: 25px;
-  /* font-size: 1.5rem; */
 }
 
 .high-score-text:hover {
@@ -50,28 +45,10 @@ h4,
   text-align: left;
 }
 
-.main-box {
-  /* border: 3px dashed green; */
-  padding: 0px 150px 20px 150px;
-}
-
-#scores-container {
-  max-width: 400px;
-  margin: auto;
-}
-
-.scores-main-box p {
-  display: block;
-  /* max-width: 300px; */
-  padding-left: 30px;
-  margin: 0px 45px 0px 45px;
-}
-
 .landing-paragraph {
   margin: auto;
   max-width: 550px;
   font-size: 1.2rem;
-  /* margin-bottom: 20px; */
   margin: auto;
 }
 
@@ -85,10 +62,39 @@ h4,
   margin-top: 20px;
 }
 
+#start-button-container {
+  text-align: center;
+  margin: auto;
+}
+
 .start-button,
 #go-back,
 #clear-history:hover {
   cursor: pointer;
+}
+
+/*:::::::::::: quiz pages :::::::::::: */
+#quiz-container,
+#scores-container {
+  min-width: 500px;
+  max-width: 700px;
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+}
+
+.main-box {
+  padding: 0px 150px 20px 150px;
+}
+
+#scores-container {
+  max-width: 400px;
+  margin: auto;
+}
+
+.scores-main-box p {
+  display: block;
+  padding-left: 30px;
+  margin: 0px 45px 0px 45px;
 }
 
 .question {
@@ -120,18 +126,13 @@ h4,
   color: red;
 }
 
-/* ! not working */
-.red-shadow {
-  /* color: red; */
-  box-shadow: 0px 0px 25px 0px rgba(218, 101, 101, 0.5);
-}
-
 .done-h1,
 .player-score {
   text-align: left;
   padding-left: 63px;
 }
 
+/*:::::::::::: high scores page ::::::::::::*/
 .initials-p {
   text-align: left;
 }
@@ -148,25 +149,17 @@ h4,
 }
 
 .hs-h1 {
-  padding-top: 20px;
-  margin: 50px 0px 40px;
+  margin: 30px 0px 30px;
 }
 
 #sub-button,
 #go-back,
 #clear-history {
-  /* margin-bottom: 5px 10px; */
   background-color: var(--button-color);
   color: white;
   border: none;
   padding: 5px 10px;
   border-radius: 5px;
-}
-
-#start-button-container {
-  /* border: 3px dashed green; */
-  text-align: center;
-  margin: auto;
 }
 
 .hs-btn-section {
