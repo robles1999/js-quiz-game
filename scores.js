@@ -52,12 +52,12 @@ if (highScoresHistory.length > 0) {
 highScoreBtnSection.addEventListener("click", (e) => {
   e.stopPropagation();
   if (e.target.matches("#go-back")) {
-    console.log("Scores page button pressed: " + e.target);
+    console.log(e.target);
     window.location.href = "./index.html";
   }
 
   if (e.target.matches("#clear-history")) {
-    console.log("Scores page button pressed: " + e.target);
+    console.log(e.target);
     mainBox.innerHTML = "";
     localStorage.clear();
   }

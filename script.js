@@ -22,8 +22,8 @@ const quizData = {
   3: {
     question:
       "What is the result of adding a number and a string in JavaScript?",
-    options: ["An error", "The number", "The string", "A new data type"],
-    answer: "A new data type",
+    options: ["An error", "A number", "A string", "A new data type"],
+    answer: "A string",
   },
   4: {
     question: "What is the purpose of the typeof operator in JavaScript?",
@@ -47,8 +47,6 @@ const quizData = {
     answer: "function myFunction() {}",
   },
 };
-// function landingPage() {
-
 
 //! ::::::::::::::: create DOM elements  :::::::::::::::
 const timeFlexContainer = document.createElement("div");
@@ -97,7 +95,7 @@ mainBox.appendChild(startBtnContainer);
 startBtnContainer.appendChild(startButton);
 startButton.addEventListener("click", startQuiz);
 timerHighScores.addEventListener("click", () => {
-  window.location.href = "scores.html"
+  window.location.href = "scores.html";
 });
 
 //! ::::::::::::::: question card elements :::::::::::::::
@@ -128,7 +126,7 @@ function startQuiz() {
 function updateTimer() {
   if (timeLeft < 0) {
     clearInterval(timerInterval);
-    alert("You ran out of time or your score is less than 0.")
+    alert("You ran out of time or your score is less than 0.");
     window.location.replace("index.html");
   } else {
     //! change timer color when it reaches 10 seconds
@@ -146,7 +144,6 @@ async function noMoreQuestions() {
     score = timeLeft;
     console.log(`This is your score: ${timeLeft + 1}`);
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    // window.location.replace("scores.html");
     mainBox.innerHTML = "";
     saveScore();
   } else {
@@ -163,7 +160,6 @@ function showQuestion() {
 
   //! select question card elements
   const questionEl = document.querySelector(".question");
-  // const answers = document.querySelector(".answer-list");
   const firstAnswer = document.querySelector(".answer-1");
   const secondAnswer = document.querySelector(".answer-2");
   const thirdAnswer = document.querySelector(".answer-3");
@@ -176,26 +172,23 @@ function showQuestion() {
   const options = quizData[questionNumber].options;
 
   //! add data-answer attribute by looping through the answer options array
-  for (
-    let option = 0;
-    option < quizData[questionNumber].options.length;
-    option++
-  ) {
+  for (let option = 0; option < options.length; option++) {
     document
       .querySelector(".answer-" + (option + 1))
       .setAttribute("data-answer", options[option]);
   }
 
-  firstAnswer.textContent = "1. " + quizData[questionNumber].options[0];
-  secondAnswer.textContent = "2. " + quizData[questionNumber].options[1];
-  thirdAnswer.textContent = "3. " + quizData[questionNumber].options[2];
-  fourthAnswer.textContent = "4. " + quizData[questionNumber].options[3];
+  firstAnswer.textContent = "1. " + options[0];
+  secondAnswer.textContent = "2. " + options[1];
+  thirdAnswer.textContent = "3. " + options[2];
+  fourthAnswer.textContent = "4. " + options[3];
 
   mainBox.addEventListener("click", checkAnswer);
 }
 
 async function checkAnswer(e) {
-
+  e.stopPropagation();
+  console.log("check answer: " + e.target);
   //! make sure one of the answer buttons was pressed
   //? `target` returns the entire element
   //? ex. < button class="btn .answer" data-answer="//"> text</ >
@@ -262,6 +255,6 @@ function saveScore() {
 
     mainBox.innerHTML = "";
     // viewHighScores();
-    window.location.href = "scores.html"
+    window.location.href = "scores.html";
   });
 }
