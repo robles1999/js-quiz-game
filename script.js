@@ -126,12 +126,11 @@ function startQuiz() {
 async function updateTimer() {
   //! if timer is 0 the game is over alert the user and redirect
   //! call saveScore
-  if (timeLeft === 0) {
+  if (timeLeft <= 0) {
     clearInterval(timerInterval);
     clock.textContent = `Timer: ${timeLeft}`;
     await new Promise((resolve) => setTimeout(resolve, 100));
     alert("You ran out of time.");
-    timeLeft = 0;
     saveScore();
   } else {
     //! change timer color when it reaches 10 seconds
