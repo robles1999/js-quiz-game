@@ -164,9 +164,9 @@ function showQuestion() {
 
   //! send feedback to the user on previous question
   if (questionNumber > 1) {
-    answerValidation.textContent = validation;
-    mainBox.appendChild(answerValidation);
-
+    showValidation();
+    // answerValidation.textContent = validation;
+    // mainBox.appendChild(answerValidation);
   }
 
   //! select question card elements
@@ -198,8 +198,7 @@ function showQuestion() {
 }
 
 async function checkAnswer(e) {
-
-  console.log("Question number: " + questionNumber)
+  console.log("Question number: " + questionNumber);
   e.stopPropagation();
   //! make sure one of the answer buttons was pressed
   //? `target` returns the entire element
@@ -243,6 +242,11 @@ function saveScore() {
 
   const subBtn = document.querySelector("#sub-button");
 
+  if (timeLeft > 0) {
+    
+    showValidation();
+  }
+
   //! when the initials are submitted, add the initials and score
   //! to the `highScoresData` array, then write new data to local storage
   subBtn.addEventListener("click", (e) => {
@@ -262,4 +266,12 @@ function saveScore() {
     mainBox.innerHTML = "";
     window.location.href = "scores.html";
   });
+}
+
+function showValidation() {
+  answerValidation.textContent = validation;
+  mainBox.appendChild(answerValidation);
+  setTimeout(() => {
+    answerValidation.remove();
+  }, 1000);
 }
